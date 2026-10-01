@@ -19,4 +19,16 @@
       ansible.builtin.copy:
         src: website/index.html
         dest: /var/www/html/index.html
-        mode: '0644'
+        mode: '0644' #6-read and write-owner,4-read-user,4-read-other
+
+    - name: Deploy login page
+      ansible.builtin.copy:
+        src: website/login.html
+        dest: /var/www/html/login.html
+        mode: '0664'
+    - name: Deploy Sing up page
+      ansible.builtin.copy:
+        src: website/signup.html
+        dest: /var/www/html/signup.html
+        mode: '0664'
+    
