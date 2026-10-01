@@ -2,33 +2,47 @@
 - name: Deploy Website
   hosts: web 
   become: true
-  tasks:
-    - name: Install Nginx
-      ansible.builtin.apt:
-        name: nginx
-        state: present
-        update_cache: true
+  vars_files:
+    - vars.yml
+  roles:
+    - webserver
+  # tasks:
+  #   - name: Install Nginx
+  #     ansible.builtin.apt:
+  #       name: "{{ nginx_package }}"
+  #       state: present
+  #       update_cache: true
     
-    - name: Start Nginx
-      ansible.builtin.service:
-        name: nginx
-        state: started
-        enabled: true
+  #   - name: Start Nginx
+  #     ansible.builtin.service:
+  #       # name: nginx
+  #       name: nginx
+  #       state: started
+  #       enabled: true
     
-    - name: Deploy Website
-      ansible.builtin.copy:
-        src: website/index.html
-        dest: /var/www/html/index.html
-        mode: '0644' #6-read and write-owner,4-read-user,4-read-other
+  #   - name: Deploy Website
+  #     # ansible.builtin.copy:
+  #     ansible.builtin.template:
+  #       # src: website/index.html
+  #       # dest: /var/www/html/index.html
+  #       src: templates/index.html.j2
+  #       dest: "{{ website_path }}"
+  #       mode: '0644' #6-read and write-owner,4-read-user,4-read-other
+  #     notify:
+  #       - Reload Nginx
+  #   - name: Deploy login page
+  #     ansible.builtin.copy:
+  #       src: website/login.html
+  #       dest: /var/www/html/login.html
+  #       mode: '0664'
+  #   - name: Deploy Sign up page
+  #     ansible.builtin.copy:
+  #       src: website/signup.html
+  #       dest: /var/www/html/signup.html
+  #       mode: '0664'
 
-    - name: Deploy login page
-      ansible.builtin.copy:
-        src: website/login.html
-        dest: /var/www/html/login.html
-        mode: '0664'
-    - name: Deploy Sing up page
-      ansible.builtin.copy:
-        src: website/signup.html
-        dest: /var/www/html/signup.html
-        mode: '0664'
-    
+  # handlers:
+  #   - name: Reload Nginx
+  #     ansible.builtin.service:
+  #       name: nginx
+  #       state: reloaded

@@ -1,0 +1,4 @@
+nginx_package: nginx
+website_path: /var/www/html/index.html
+server_name: "My AWS EC2 Server"
+environment1: "Production"

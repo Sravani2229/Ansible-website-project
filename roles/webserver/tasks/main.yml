@@ -1,0 +1,32 @@
+---
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: "{{ nginx_package }}"
+    state: present
+    update_cache: true
+
+- name: Start Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Deploy Website
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: "{{ website_path }}"
+    mode: '0644'
+  notify:
+    - Reload Nginx
+
+- name: Deploy login page
+  ansible.builtin.copy:
+    src: login.html
+    dest: /var/www/html/login.html
+    mode: '0644'
+
+- name: Deploy Sign up page
+  ansible.builtin.copy:
+    src: signup.html
+    dest: /var/www/html/signup.html
+    mode: '0644'
